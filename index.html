@@ -966,6 +966,42 @@ window.EXTRA_CARDS = [
   { t: 'bez', q: 'Quadratic Bézier "endpoints (1,1), (10,1), control point (4,8)": which is P1?', a: 'P1 = (4,8), the control point goes in the MIDDLE: P0 = (1,1), P1 = (4,8), P2 = (10,1) → B(0.5) = (4.75, 4.5). Labelling P1 = (10,1) gives (6.25, 2.75): wrong (a 2025 student guide does this).' },
   { t: 'img', q: 'Increase resolution 1:2 (pseudo-code idea)?', a: 'new[2y+i][2x+j] = old[y][x] for i, j ∈ {0,1} (nearest neighbour: each old pixel becomes a 2×2 block); or interpolate (bilinear) for a smoother result.' },
 ];
+
+/* By-hand hints (no calculator in the test: "no electronic devices"). Shown in Tasks and in pack Part C. */
+window.HAND = {
+  datarate: 'Keep powers of ten apart: 4096·2160 ≈ 8.85·10⁶ (slide rounds to 10⁷). Bytes × Hz first: 3·60 = 180. Then 10⁷·180 = 1.8·10⁹ B/s. For 1920·1080 use the resolution table (2,073,600).',
+  pxtime: 'W·H from the resolution table, × Hz → write it as a·10ⁿ (1920·1080·80 = 1.65888·10⁸). Then 1/a from the reciprocal table: 1/1.659 ≈ 0.603 → 0.603·10⁻⁸ s = 6.03 ns.',
+  vecmem: 'All integers: numbers per shape × 4 B × count. Circle 12 B, triangle 24 B, rectangle 32 B, cube 96 B: just multiply by 100.',
+  vectors: 'Integer arithmetic only. Cross product with the "xyzzy" pattern; check the direction with the right-hand rule. Matrix × vector = row · vector, one row at a time.',
+  memory: 'Divide by 8 early: 24 bit = 3 B, 16 bit = 2 B. W·H from the resolution table, ×3. MB = move the comma 6 places (2,359,296 B = 2.36 MB).',
+  ppi: 'width = diagonal × 0.8716 for 16:9 (×0.8 for 4:3; table). 42·0.8716: 42·0.87 = 36.54, +42·0.0016 = 0.07 → 36.61. ppi = 1920/36.61: 36.61·50 = 1830.5, rest 89.5 ≈ 2.45·36.61 → 52.45.',
+  eye: 'n = W/(D·tan1′) = (W/D)·3438 (1/tan 1′ = 3437.7). 30/50 = 0.6 → 0.6·3438 = 2063. With the slide\'s 0.00029: (W/D)·3448 = 2069.',
+  half: 'No numbers: write the 2×2 average loop. Mention the per-channel division by 4.',
+  bilinear: 'Use fractions, not decimals: α = ¾ → P1 = (A + 3B)/4; β = ¾ → N = (P1 + 3P2)/4. (30 + 150)/4 = 45; (45 + 180)/4 = 56.25; (45 + 168.75)/4 = 53.44.',
+  resample: 'Count dark pixels in each 2×2 block: 0, 1, 2, 3, 4 dark → 0 %, 25 %, 50 %, 75 %, 100 % grey.',
+  ncolours: 'Powers-of-2 table: (2ᵇ)³ = 2^(3b). 3 bits → 2⁹ = 512; 4 → 2¹² = 4096; 8 → 2²⁴ = 16,777,216.',
+  quant: 'No division needed: find the value\'s bin in the "8 → n bits" table (÷32 for 3 bits: 0–31 → 0, 32–63 → 1 … 224–255 → 7; ÷16 for 4 bits).',
+  cmy: '255 − v: count up from v to 255 (135 → 255 is 120).',
+  grey: 'Weight table (0.299v, 0.587v, 0.114v) for round values, or approximate 0.3R + 0.59G + 0.11B (off by < 1). For 128: 0.299·128 = 38.27, 0.114·128 = 14.59 → 52.86. The average (R+G+B)/3 is easy: write both.',
+  mix: '(a + b)/2 per channel; 255/2 = 127.5 → 128. For 25/75: (a + 3b)/4.',
+  cie: 'No numbers: draw the straight segment between 1 and 2.',
+  rgbmodel: 'No numbers: draw the cube with the 8 vertices labelled.',
+  hsv: 'V = max/255. S = (max − min)/max (1 if min = 0). H: pure mixes from the hue clock (R 0, Y 60, G 120, C 180, B 240, M 300); otherwise H = sector start ± 60·(mid − min)/(max − min). [255,128,0]: 60·128/255 ≈ 60·0.5 = 30°.',
+  dda: 'Keep m as a fraction (3/5): y = 0, 3/5, 6/5, 9/5, 12/5, 3 → round by comparing the remainder with half the denominator (3/5 ≥ ½ → up).',
+  slope: 'No arithmetic: show 3 isolated pixels for (0,0)→(2,5).',
+  bres: 'Integers only, made for no calculator: a, b, p₀, then add a or b each step.',
+  aa: 'Fractional parts of y = m·x: with m = 2/5 → .4, .8, .2, .6. Weights are 1 − f (lower pixel) and f (upper).',
+  circle: 'Use p₀ = 1 − r (integer, same pixels as 5/4 − r): r = 10 → p = −9, −6, −1, 6, −3, 8, 5. Updates: +2x₊+1 or +2x₊+1−2y₊. Check: x² + y² ≈ r².',
+  scan: 'Crossing x = x₁ + (y − y₁)·(Δx/Δy): Δx/Δy is a constant fraction per edge, so add it row by row.',
+  flood: 'No arithmetic: number the pixels while following the recursion.',
+  bary: 'Right triangle at the origin, A(0,0), B(0,h), C(w,0): β = y/h, γ = x/w, α = 1 − β − γ. Otherwise use the Cramer formula with fractions. Value: a weighted sum with quarters: .25·255 = 63.75, .25·128 = 32.',
+  xf: 'Multiply matrices with integers first; keep √2/2 as a symbol for 45° and use the k·0.7071 table at the end: (1 − (−1))·√2/2 = 2·0.7071 = 1.414.',
+  frame: '90° multiples need no trig: frame +90° → (u, v) = (y, −x); frame −90° → (−y, x); 180° → (−x, −y). Subtract the origin first.',
+  cs: 'Codes by comparison, no arithmetic. Cut points: (c − y₁)/Δy as a fraction, then x = x₁ + Δx·fraction (e.g. (5 − 10)/(−7) = 5/7 → x = 8 + 7·5/7 = 13).',
+  sh: 'Same cut formula with fractions; 55/9 = 6.11 by long division (9·6 = 54, remainder 1 → 0.11).',
+  bez: 't = ½ is just midpoints (averages). t = ¼, ¾: quarter points (3A + B)/4 and (A + 3B)/4. No multiplication of decimals needed.',
+  pipeline: 'Theory only.', fragio: 'Theory only.', theory: 'Theory only.',
+};
 </script>
 <script>/* One-day sprint before GRK Test 1 (owner starts Wed 11 Nov 2026, test Fri 13 Nov 08:30).
    Shared by the app (Today tab checklist) and build/make_pack.js (printable sprint sheet). */
@@ -975,6 +1011,7 @@ window.EXTRA_CARDS = [
       'Each block: 5 min read the recipe (Tasks tab) → do the official example with the answer covered (pack Part B) → 2–3 random problems in Solve with the solution hidden → 10 min cards for that topic.',
       'Never look at a solution before you try. Mixing topics later (mock, cards on "All") is what makes it stick.',
       'Every task on paper: formula → table of steps → drawing → boxed answer, and write your convention.',
+      'No calculator in the test (no electronic devices): practise every calculation by hand today, using the by-hand hints in Tasks and the tables in pack Part C.',
     ],
     days: [
       { date: '2026-11-11', label: 'Wednesday 11 Nov · the whole day', blocks: [
@@ -991,7 +1028,7 @@ window.EXTRA_CARDS = [
         { id: 'dinner', time: '17:30–18:15', title: 'Dinner', t: null, tasks: [], solvers: [], how: 'Break. Drink water.' },
         { id: 'w9', time: '18:15–19:45', title: 'Full mock, real length', t: null, tasks: [], solvers: [], how: 'Mock tab → 90 min, printed pack allowed (like the real test). Then reveal and mark yourself honestly. Save the score.' },
         { id: 'w10', time: '19:55–20:45', title: 'Fix what you lost', t: null, tasks: [], solvers: [], how: 'Redo every task you lost points on, with new random numbers (Solve → Random numbers). Then 15 min of True/false cards.' },
-        { id: 'w11', time: '20:45–21:15', title: 'Annotate the pack + pack the bag', t: null, tasks: [], solvers: [], how: 'Write your own notes in the printed pack from memory (traps you made today). Bag: pack, squared paper, ruler, 2 pencils, eraser, pen, calculator if allowed, student ID.' },
+        { id: 'w11', time: '20:45–21:15', title: 'Annotate the pack + pack the bag', t: null, tasks: [], solvers: [], how: 'Write your own notes in the printed pack from memory (traps you made today). Bag: pack, squared paper, ruler, 2 pencils, eraser, pen, student ID. NO calculator or phone (no electronic devices).' },
         { id: 'w12', time: '21:15', title: 'Stop. Sleep before 23:00', t: null, tasks: [], solvers: [], how: 'Memory is consolidated in sleep. No new topics tonight.' },
       ] },
       { date: '2026-11-12', label: 'Thursday 12 Nov · light (about 1 hour)', blocks: [
@@ -1311,7 +1348,7 @@ window.EXTRA_CARDS = [
     const due = CARDS.filter((c) => !isNew(c.id) && isDue(c.id)).length;
     const todayKey = now.toISOString().slice(0, 10);
     const per = TOPICS.filter((t) => t.id !== 'org').map((t) => { const cs = CARDS.filter((c) => c.t === t.id); const s = cs.filter((c) => (state.srs[c.id] || [0])[0] >= 2).length; return [t, cs.length, s]; });
-    return `<section class="sheet countdown"><div class="big">${days > 0 ? days : 0}</div><div><div class="eyebrow">days to Test 1</div><h2>Fri 13 Nov 2026 · 15 points · lectures 1–6</h2><p class="small muted">Format (2025 student report): 3–4 tasks, about 90 min, any paper notes and printouts allowed, no phones. Ask the lecturer if a calculator is allowed; the printed pack has tables in case it isn't.</p></div></section>
+    return `<section class="sheet countdown"><div class="big">${days > 0 ? days : 0}</div><div><div class="eyebrow">days to Test 1</div><h2>Fri 13 Nov 2026 · 15 points · lectures 1–6</h2><p class="small muted">Rules (lecturer, Teams 2 Oct): open book: your own handwritten or printed notes and books are allowed, but you can't share them. No electronic devices, so no calculator and no phone. Use the by-hand hints in Tasks and the tables in the printed pack. Format (2025 student report): 3–4 tasks, about 90 min.</p></div></section>
     <section class="stats"><div class="stat"><span class="eyebrow">cards</span><b>${CARDS.length}</b><span class="small muted">${seen} seen</span></div><div class="stat"><span class="eyebrow">due now</span><b>${due}</b><span class="small muted">to review</span></div><div class="stat"><span class="eyebrow">known</span><b>${strong}</b><span class="small muted">box ≥ 2</span></div><div class="stat"><span class="eyebrow">mocks done</span><b>${state.mocks.length}</b><span class="small muted">${state.mocks.length ? 'last ' + esc(state.mocks[state.mocks.length - 1].score || '') : 'start one'}</span></div></section>
     <section class="grid2">${sprintHTML(now)}
     <div class="sheet"><h2>Topic strength</h2><p class="small muted">Share of each topic's cards you rated "good" at least twice.</p><div style="display:grid;gap:10px;margin-top:10px">${per.map(([t, n, s]) => `<div><div class="row" style="justify-content:space-between"><span><span class="pill t-${t.colour}">${t.lec}</span> ${esc(t.name)}</span><span class="small mono">${s}/${n}</span></div><div class="meter"><i class="bg-${t.colour}" style="width:${n ? (100 * s / n).toFixed(0) : 0}%"></i></div></div>`).join('')}</div>
@@ -1359,6 +1396,7 @@ window.EXTRA_CARDS = [
     ${list.map((x) => { const t = TOPIC[x.t]; return `<details class="task" id="task-${x.id}"><summary><span class="tbar bg-${t.colour}"></span><span><b>${esc(x.title)}</b><br><span class="small muted">${esc(x.seen)}</span></span><span class="pill t-${t.colour}">${t.lec}</span></summary>
       <div class="inner"><blockquote>${esc(x.ask)}</blockquote><div><div class="eyebrow">Recipe</div><ol>${x.recipe.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></div>${x.img ? fig(x.img) : ''}
       <details><summary class="small" style="cursor:pointer;font-weight:700">Show the worked answer</summary><div class="ex">${esc(x.ex)}</div></details>
+      ${window.HAND && HAND[x.id] && !/^Theory only/.test(HAND[x.id]) ? `<div class="hook small"><b>✍️ By hand (no calculator):</b> ${esc(HAND[x.id])}</div>` : ''}
       ${x.traps.length ? `<div class="trap small">⚠ ${x.traps.map(esc).join(' · ')}</div>` : ''}
       ${x.solver ? `<div class="row"><button class="btn primary" data-solve="${x.solver}">Solve with my numbers</button><button class="btn ghost" data-solve-rnd="${x.solver}">Practice: random numbers</button></div>` : ''}</div></details>`; }).join('')}`;
   };

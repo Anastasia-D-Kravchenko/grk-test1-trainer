@@ -10,6 +10,6 @@ What's inside:
 - **Solve**: type the numbers from a task and get the full solution step by step, with a drawing (DDA, Bresenham, midpoint circle, scan-line, seed fill, barycentric, colour conversions, 2D matrices, frame change, Cohen–Sutherland, Sutherland–Hodgman, Bézier, memory/data-rate/ppi and more). "Random numbers" makes practice problems.
 - **Mock**: a 15-point test with fresh numbers and a timer, then model solutions.
 - **One-day sprint**: an hour-by-hour plan for the day before (checklist on the Today tab; printable: [GRK_Wednesday_Sprint.pdf](GRK_Wednesday_Sprint.pdf)).
-- **Printable pack** (10 pages): [GRK_Test1_Reference_Pack.pdf](GRK_Test1_Reference_Pack.pdf): quick reference, model answers, tables for working without a calculator, templates.
+- **Printable pack** (12 pages): [GRK_Test1_Reference_Pack.pdf](GRK_Test1_Reference_Pack.pdf): quick reference, model answers, a by-hand section for every task type (no calculator allowed), tables, templates.
 
 Unofficial study material made by a student. Check anything important against the lecture slides.
